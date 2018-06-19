@@ -1,6 +1,7 @@
 <?php
 include 'db_connection/db_connection.php';
 include_once 'header.php';
+$conn = connect_db();
 
 $products_q  = "SELECT * from products WHERE id_product not IN (select product_id FROM cart)";
 $products_r  = mysqli_query($conn, $products_q);

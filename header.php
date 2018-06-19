@@ -13,7 +13,18 @@ and open the template in the editor.
     <head>
         <meta charset="UTF-8">
         <title></title>
-        <link rel="stylesheet" type="text/css" href="styles/style.css">
+        <?php if($_SERVER['REQUEST_URI'] == "/Shop/index.php"){
+                    $link_index = 'href="index.php"';
+                    $link_admin = 'href="administrare/administrare.php"';
+                    $link_cart = 'href="cart/cart.php"';
+                    $style = 'href="styles/style.css"';
+                } else{
+                    $link_index = 'href="../index.php"';
+                    $link_admin = 'href="../administrare/administrare.php"';
+                    $link_cart = 'href="../cart/cart.php"';
+                    $style = 'href="../styles/style.css"';
+                }?>
+        <link rel="stylesheet" type="text/css" <?php echo $style; ?> >
     </head>
     <body>
         <header>
@@ -23,13 +34,13 @@ and open the template in the editor.
                     <?php if(isset($_SESSION['u_id'])){ ?>
                     <form action="index.php" method="POST">
                         <button name="home" style="margin-top: 20px; margin-left: 5px;"
-                                class="head_btn">Home</button>
+                                class="head_btn"><a <?php echo $link_index; ?>>Home</a></button>
                         <button name="admin"
                             style="margin-top: 20px; margin-left: 5px;"
-                            class="head_btn">Administrate</button>
+                            class="head_btn"><a <?php echo $link_admin; ?>>Administrate</a></button>
                         <button name="cart"
                             style="margin-top: 20px; margin-left: 5px;"
-                            class="head_btn">Cart</button>
+                            class="head_btn"><a <?php echo $link_cart; ?>>Cart</a></button>
                     </form>
                       <?php } ?>
                     <div class="nav-login">

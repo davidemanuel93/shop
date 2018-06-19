@@ -1,6 +1,10 @@
 <?php
-include 'db_connection/db_connection.php';
-include_once 'header.php';
+include '../db_connection/db_connection.php';
+$conn = connect_db();
+echo '<link rel="stylesheet" type="text/css" href="../styles/style.css">';
+echo '<script src="../js/jquery-3.3.1.js"></script>';
+include_once '../header.php';
+require_once 'actions.php';
 echo '';
 $products_q  = "SELECT * from products WHERE id_product not IN (select product_id FROM cart)";
 $products_r  = mysqli_query($conn, $products_q);
@@ -16,7 +20,7 @@ $products_nr = mysqli_num_rows($products_r);
         <th>Action</th>
     </tr>
     <tr>
-    <form action='index.php' method='POST'>
+    <form action='' method='POST'>
         <td class='vertical_middle'>
             <input type="text" name='name_product' placeholder="Product name">
         </td>
@@ -35,7 +39,7 @@ $products_nr = mysqli_num_rows($products_r);
 </tr>
 </table>
 
-<table id='update_products'>
+<table id='update_products' style="margin-left: 230px;">
     <caption>Update products</caption>
     <tr>
         <th>Product</th>
@@ -71,16 +75,8 @@ $products_nr = mysqli_num_rows($products_r);
         <?php
         if (isset($_POST['update'])) {
             $id_user     = $_SESSION["u_id"];
-            $product_id  = mysqli_real_escape_string($conn, $_POST['id_product']);
-            $name        = mysqli_real_escape_string($conn, $_POST['name']);
-            $category    = mysqli_real_escape_string($conn, $_POST['category']);
-            $description = mysqli_real_escape_string($conn, $_POST['description']);
-            $price       = mysqli_real_escape_string($conn, $_POST['price']);
-
-            $actualizeaza_q = "UPDATE products set name = '$name', category = '$category', 
-                               description = '$description', price = '$price'  
-                               where id_product = $product_id";
-            mysqli_query($conn, $actualizeaza_q);
+            update_products($conn, $_POST['id_product'], $_POST['name'],
+                    $_POST['category'], $_POST['description'],  $_POST['price']);
         }
     }
 }
@@ -89,16 +85,10 @@ echo "</table>";
 
 
 if (isset($_POST['add_product'])) {
+    insert_product($conn, $_POST['name_product'], $_POST['category'],
+                   $_POST['description'], $_POST['price']);
 
-    $name        = mysqli_real_escape_string($_POST['name_product']);
-    $category    = mysqli_real_escape_string($_POST['category']);
-    $description = mysqli_real_escape_string($_POST['description']);
-    $price       = mysqli_real_escape_string($_POST['price']);
-
-    $adauga_q = "INSERT INTO products (name, category, description, price)
-                VALUES ('$name','$category', '$description', '$price')";
-    mysqli_query($conn, $adauga_q);
 }
 
-include_once 'footer.php';
+include_once '../footer.php';
 ?>        

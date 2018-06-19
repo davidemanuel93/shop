@@ -4,7 +4,7 @@ session_start();
 
 if(isset($_POST['submit'])){
     include '../db_connection/db_connection.php';
-    
+    $conn = connect_db();
     $uid = mysqli_real_escape_string($conn, $_POST['uid']);
     $pwd = mysqli_real_escape_string($conn, $_POST['pwd']);
     
